@@ -7,15 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DB2053B525E5FF31001915B4 /* BSTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2053B425E5FF31001915B4 /* BSTabBar.swift */; };
+		DB2053B825E5FF55001915B4 /* BSTabCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2053B725E5FF55001915B4 /* BSTabCell.swift */; };
+		DB2053BB25E605C6001915B4 /* BSTabBarFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2053BA25E605C6001915B4 /* BSTabBarFlowLayout.swift */; };
+		DB2053BE25E63F5D001915B4 /* BSTabPageContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2053BD25E63F5D001915B4 /* BSTabPageContentView.swift */; };
 		DBD6AC1725E5EAD50099C733 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD6AC1625E5EAD50099C733 /* AppDelegate.swift */; };
 		DBD6AC1925E5EAD50099C733 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD6AC1825E5EAD50099C733 /* SceneDelegate.swift */; };
 		DBD6AC1B25E5EAD50099C733 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD6AC1A25E5EAD50099C733 /* ViewController.swift */; };
 		DBD6AC1E25E5EAD50099C733 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DBD6AC1C25E5EAD50099C733 /* Main.storyboard */; };
 		DBD6AC2025E5EAD80099C733 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DBD6AC1F25E5EAD80099C733 /* Assets.xcassets */; };
 		DBD6AC2325E5EAD80099C733 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DBD6AC2125E5EAD80099C733 /* LaunchScreen.storyboard */; };
+		DBD6AC2C25E5EB1D0099C733 /* BSTabPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD6AC2B25E5EB1D0099C733 /* BSTabPageController.swift */; };
+		DBD6AC3125E5EB5A0099C733 /* BSTabPageDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD6AC3025E5EB5A0099C733 /* BSTabPageDataSource.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DB2053B425E5FF31001915B4 /* BSTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSTabBar.swift; sourceTree = "<group>"; };
+		DB2053B725E5FF55001915B4 /* BSTabCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSTabCell.swift; sourceTree = "<group>"; };
+		DB2053BA25E605C6001915B4 /* BSTabBarFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSTabBarFlowLayout.swift; sourceTree = "<group>"; };
+		DB2053BD25E63F5D001915B4 /* BSTabPageContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSTabPageContentView.swift; sourceTree = "<group>"; };
 		DBD6AC1325E5EAD50099C733 /* BSTabPageController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BSTabPageController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBD6AC1625E5EAD50099C733 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DBD6AC1825E5EAD50099C733 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -24,6 +34,8 @@
 		DBD6AC1F25E5EAD80099C733 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DBD6AC2225E5EAD80099C733 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DBD6AC2425E5EAD80099C733 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DBD6AC2B25E5EB1D0099C733 /* BSTabPageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSTabPageController.swift; sourceTree = "<group>"; };
+		DBD6AC3025E5EB5A0099C733 /* BSTabPageDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSTabPageDataSource.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,8 +75,22 @@
 				DBD6AC1F25E5EAD80099C733 /* Assets.xcassets */,
 				DBD6AC2125E5EAD80099C733 /* LaunchScreen.storyboard */,
 				DBD6AC2425E5EAD80099C733 /* Info.plist */,
+				DBD6AC2E25E5EB3C0099C733 /* Sources */,
 			);
 			path = BSTabPageController;
+			sourceTree = "<group>";
+		};
+		DBD6AC2E25E5EB3C0099C733 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				DBD6AC2B25E5EB1D0099C733 /* BSTabPageController.swift */,
+				DBD6AC3025E5EB5A0099C733 /* BSTabPageDataSource.swift */,
+				DB2053B425E5FF31001915B4 /* BSTabBar.swift */,
+				DB2053BD25E63F5D001915B4 /* BSTabPageContentView.swift */,
+				DB2053B725E5FF55001915B4 /* BSTabCell.swift */,
+				DB2053BA25E605C6001915B4 /* BSTabBarFlowLayout.swift */,
+			);
+			path = Sources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -138,7 +164,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				DBD6AC1B25E5EAD50099C733 /* ViewController.swift in Sources */,
+				DBD6AC2C25E5EB1D0099C733 /* BSTabPageController.swift in Sources */,
+				DB2053BE25E63F5D001915B4 /* BSTabPageContentView.swift in Sources */,
+				DB2053BB25E605C6001915B4 /* BSTabBarFlowLayout.swift in Sources */,
+				DB2053B525E5FF31001915B4 /* BSTabBar.swift in Sources */,
 				DBD6AC1725E5EAD50099C733 /* AppDelegate.swift in Sources */,
+				DB2053B825E5FF55001915B4 /* BSTabCell.swift in Sources */,
+				DBD6AC3125E5EB5A0099C733 /* BSTabPageDataSource.swift in Sources */,
 				DBD6AC1925E5EAD50099C733 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -289,6 +321,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 79399T3H3C;
 				INFOPLIST_FILE = BSTabPageController/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -308,6 +341,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 79399T3H3C;
 				INFOPLIST_FILE = BSTabPageController/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

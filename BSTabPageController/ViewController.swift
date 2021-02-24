@@ -8,12 +8,20 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    @IBOutlet weak var tabPage: BSTabPageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        let view1 = UIView()
+        view1.backgroundColor = .blue
+        
+        let controller = UIViewController()
+        controller.view.backgroundColor = .yellow
+        tabPage.barHeight = 60
+        tabPage.dataSources = [
+            BSTabPageDataSource(title: "ABC", page: view1),
+            BSTabPageDataSource(title: "CBA", page: controller)
+        ]
     }
-
-
 }
 
