@@ -14,8 +14,7 @@ class BSTabBarContentFlowLayout: UICollectionViewFlowLayout {
         scrollDirection = .horizontal
         minimumLineSpacing = 0
         minimumInteritemSpacing = 0
-        cv.layoutMargins = .zero
-        itemSize = .init(width: cv.frame.width, height: cv.frame.height)
+		sectionInset = .zero
     }
 }
 
@@ -42,6 +41,8 @@ class BSTabBarFlowLayout: UICollectionViewFlowLayout {
         minimumLineSpacing = CGFloat(lineSpacing)
         minimumInteritemSpacing = CGFloat(interSpacing)
         cv.layoutMargins = .zero
+		cv.contentOffset = .zero
+		cv.contentInset = .zero
         itemSize = .init(width: cv.frame.width / CGFloat(itemCount), height: cv.frame.height)
     }
 }

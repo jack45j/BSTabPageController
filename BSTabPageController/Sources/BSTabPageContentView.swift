@@ -7,37 +7,49 @@
 
 import UIKit
 
-class BSTabPageContentView: UIView, UICollectionViewDelegateFlowLayout {
+class BSTabPageContentView: UIViewController {
     
     let contentPages: [BSTabPageViewType]
+	var selected: IndexPath = .init()
     
     weak var delegate: BSTabPageContentViewDelegate?
-    
+	
     lazy var contentCollectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: bounds, collectionViewLayout: BSTabBarContentFlowLayout())
+		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: BSTabBarContentFlowLayout())
         collectionView.isPagingEnabled = true
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .black
-        collectionView.contentInsetAdjustmentBehavior = .never
         return collectionView
     }()
-    
-    init(frame: CGRect, contentPages: [BSTabPageViewType]) {
-        self.contentPages = contentPages
-        super.init(frame: frame)
-        commonInit()
-        backgroundColor = .gray
-    }
+	
+	init(contentPages: [BSTabPageViewType]) {
+		self.contentPages = contentPages
+		super.init(nibName: nil, bundle: nil)
+		commonInit()
+	}
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+	
+	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+		super.viewWillTransition(to: size, with: coordinator)
+		view.layoutSubviews()
+	}
+	
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+		contentCollectionView.collectionViewLayout.invalidateLayout()
+		contentCollectionView.frame = view.bounds
+		contentCollectionView.layoutAttributesForItem(at: selected)
+		delegate?.contentDidChange(index: selected.item)
+	}
     
     func commonInit() {
-        contentCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "EmptyCell")
-        addSubview(contentCollectionView)
-        setFillConstraint(parent: self, child: contentCollectionView)
+		contentCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "BSTabPageContentCell")
+		view.addSubview(contentCollectionView)
+//        setFillConstraint(parent: view, child: contentCollectionView)
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -45,8 +57,9 @@ class BSTabPageContentView: UIView, UICollectionViewDelegateFlowLayout {
     }
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        let index = Int(targetContentOffset.pointee.x / frame.width)
+		let index = Int(targetContentOffset.pointee.x / view.frame.width)
         delegate?.contentDidChange(index: index)
+		selected = IndexPath(item: index, section: 0)
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
@@ -54,18 +67,21 @@ class BSTabPageContentView: UIView, UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension BSTabPageContentView: UICollectionViewDelegate, UICollectionViewDataSource {
+extension BSTabPageContentView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         contentPages.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmptyCell", for: indexPath)
-        let content = contentPages[indexPath.item].pageView
-        cell.contentView.addSubview(content)
-        setFillConstraint(parent: cell.contentView, child: content)
+		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BSTabPageContentCell", for: indexPath)
+		cell.contentView.addSubview(contentPages[indexPath.item].pageView)
+		setFillConstraint(parent: cell.contentView, child: contentPages[indexPath.item].pageView)
         return cell
     }
+	
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+		return collectionView.frame.size
+	}
 }
 
 protocol BSTabPageContentViewDelegate: class {

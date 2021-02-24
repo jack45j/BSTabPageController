@@ -14,15 +14,14 @@ class BSTabBar: UIView, UICollectionViewDelegateFlowLayout {
     weak var delegate: BSTabBarDelegate?
         
     let horizontalBarView = UIView()
-    lazy var horizontalBarLeftAnchorConstraint: NSLayoutConstraint = horizontalBarView.leftAnchor.constraint(equalTo: self.leftAnchor)
+	lazy var horizontalBarCenterXAnchorConstraint: NSLayoutConstraint = .init()
     
     func setupHorizontalBar() {
         horizontalBarView.backgroundColor = .green
         horizontalBarView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(horizontalBarView)
-        horizontalBarLeftAnchorConstraint.isActive = true
         horizontalBarView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        horizontalBarView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: CGFloat(1.0 / Double(tabs.count))).isActive = true
+        horizontalBarView.widthAnchor.constraint(equalTo: tabCollectionView.widthAnchor, multiplier: CGFloat(1.0 / Double(tabs.count))).isActive = true
         horizontalBarView.heightAnchor.constraint(equalToConstant: 4).isActive = true
     }
     
@@ -49,16 +48,19 @@ class BSTabBar: UIView, UICollectionViewDelegateFlowLayout {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .black
-        collectionView.contentInsetAdjustmentBehavior = .never
         return collectionView
     }()
     
     func selectTab(index: Int) {
         delegate?.didSelectTab(index: index)
         tabCollectionView.selectItem(at: .init(item: index, section: 0), animated: true, scrollPosition: .centeredHorizontally)
-        horizontalBarLeftAnchorConstraint.constant = CGFloat(index) * frame.width / CGFloat(tabs.count)
-        UIView.animate(withDuration: 0.5) {
-            self.layoutIfNeeded()
+		horizontalBarCenterXAnchorConstraint.isActive = false
+		guard let cell = tabCollectionView.cellForItem(at: .init(item: index, section: 0)) else { return }
+		horizontalBarCenterXAnchorConstraint = horizontalBarView.centerXAnchor.constraint(equalTo: cell.centerXAnchor)
+		horizontalBarCenterXAnchorConstraint.isActive = true
+		
+		UIView.animate(withDuration: 0.5) {
+			self.layoutSubviews()
         }
     }
 }

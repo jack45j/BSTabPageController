@@ -84,9 +84,9 @@
 			isa = PBXGroup;
 			children = (
 				DBD6AC2B25E5EB1D0099C733 /* BSTabPageController.swift */,
+				DB2053BD25E63F5D001915B4 /* BSTabPageContentView.swift */,
 				DBD6AC3025E5EB5A0099C733 /* BSTabPageDataSource.swift */,
 				DB2053B425E5FF31001915B4 /* BSTabBar.swift */,
-				DB2053BD25E63F5D001915B4 /* BSTabPageContentView.swift */,
 				DB2053B725E5FF55001915B4 /* BSTabCell.swift */,
 				DB2053BA25E605C6001915B4 /* BSTabBarFlowLayout.swift */,
 			);

@@ -8,6 +8,7 @@
 import UIKit
 
 final class BSTabPageView: UIView {
+	
     
     var shouldLockGesture: Bool = false {
         didSet {
@@ -51,15 +52,16 @@ final class BSTabPageView: UIView {
     }
     
     private func setupContentPages() {
-        contentPage = BSTabPageContentView(frame: .zero, contentPages: dataSources.map { $0.page })
-        addSubview(contentPage)
+        contentPage = BSTabPageContentView(contentPages: dataSources.map { $0.page })
+		addSubview(contentPage.view)
+		contentPage.selected = IndexPath(item: 0, section: 0)
         contentPage.delegate = self
         
-        contentPage.translatesAutoresizingMaskIntoConstraints = false
-        contentPage.topAnchor.constraint(equalTo: menuBar.bottomAnchor, constant: 0).isActive = true
-        contentPage.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0).isActive = true
-        contentPage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0).isActive = true
-        contentPage.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0).isActive = true
+        contentPage.view.translatesAutoresizingMaskIntoConstraints = false
+        contentPage.view.topAnchor.constraint(equalTo: menuBar.bottomAnchor, constant: 0).isActive = true
+        contentPage.view.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0).isActive = true
+        contentPage.view.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0).isActive = true
+        contentPage.view.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0).isActive = true
     }
 }
 
@@ -75,6 +77,7 @@ extension BSTabPageView: BSTabPageContentViewDelegate {
 
 extension BSTabPageView: BSTabBarDelegate {
     func didSelectTab(index: Int) {
+		contentPage.selected = .init(item: index, section: 0)
         contentPage.contentCollectionView.selectItem(at: .init(item: index, section: 0), animated: true, scrollPosition: .centeredHorizontally)
     }
 }
