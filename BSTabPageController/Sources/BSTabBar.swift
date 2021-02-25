@@ -78,7 +78,7 @@ extension BSTabBar: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: BSTabCell.self), for: indexPath) as? BSTabCell else { fatalError() }
-        cell.titleLabel.text = tabs[indexPath.row]
+		cell.titleLabel.text = tabs[indexPath.row]
         return cell
     }
 }

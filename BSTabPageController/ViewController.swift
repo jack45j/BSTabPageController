@@ -17,10 +17,12 @@ class ViewController: UIViewController {
         
         let controller = UIViewController()
         controller.view.backgroundColor = .yellow
-        tabPage.barHeight = 60
+		tabPage.config.menuBarHeight = 60
         tabPage.dataSources = [
             BSTabPageDataSource(title: "ABC", page: view1),
-            BSTabPageDataSource(title: "CBA", page: controller)
+            BSTabPageDataSource(title: "CBA", page: controller),
+			BSTabPageDataSource(title: "DDD", page: view1),
+			BSTabPageDataSource(title: "CBAA", page: controller)
         ]
     }
 }

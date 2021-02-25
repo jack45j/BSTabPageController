@@ -49,11 +49,10 @@ class BSTabPageContentView: UIViewController {
     func commonInit() {
 		contentCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "BSTabPageContentCell")
 		view.addSubview(contentCollectionView)
-//        setFillConstraint(parent: view, child: contentCollectionView)
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        delegate?.shouldLockGesture(true)
+        delegate?.isTabMenuClickable(true)
     }
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
@@ -63,7 +62,7 @@ class BSTabPageContentView: UIViewController {
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        delegate?.shouldLockGesture(false)
+        delegate?.isTabMenuClickable(false)
     }
 }
 
@@ -86,5 +85,5 @@ extension BSTabPageContentView: UICollectionViewDelegate, UICollectionViewDataSo
 
 protocol BSTabPageContentViewDelegate: class {
     func contentDidChange(index: Int)
-    func shouldLockGesture(_ lock: Bool)
+    func isTabMenuClickable(_ lock: Bool)
 }

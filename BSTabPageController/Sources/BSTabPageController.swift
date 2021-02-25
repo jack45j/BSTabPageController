@@ -7,12 +7,24 @@
 
 import UIKit
 
+struct BSTabPageViewConfiguration {
+	var menuBarHeight: CGFloat = 60
+	var menuBarFont: UIFont = .systemFont(ofSize: 24)
+	var menuBarTextColor: UIColor = .black
+	var menuBarHighlightedTextColor: UIColor = .black
+	var menuBarLineHeight: CGFloat = 4
+	var menuBarLineColor: UIColor = .black
+	var menuBarBackgroundColor: CGColor = UIColor.red.cgColor
+	var menuBarHighlightedBackgroundColor: CGColor = UIColor.white.cgColor
+}
+
 final class BSTabPageView: UIView {
 	
+	var config: BSTabPageViewConfiguration = .init()
     
-    var shouldLockGesture: Bool = false {
+    var isTabMenuClickable: Bool = false {
         didSet {
-            menuBar.tabCollectionView.allowsSelection = !shouldLockGesture
+            menuBar.tabCollectionView.allowsSelection = !isTabMenuClickable
         }
     }
     
@@ -20,9 +32,6 @@ final class BSTabPageView: UIView {
     var dataSources: [BSTabPageDataSource] = []
     var menuBar: BSTabBar!
     var contentPage: BSTabPageContentView!
-
-    // A CGFloat value to determine menu bar's height.
-    var barHeight: CGFloat = 48.0
     
     init(frame: CGRect, dataSources: [BSTabPageDataSource]) {
         self.dataSources = dataSources
@@ -40,13 +49,13 @@ final class BSTabPageView: UIView {
     }
     
     private func setupTabBar() {
-        menuBar = BSTabBar(frame: .init(x: 0, y: 0, width: frame.width, height: barHeight), titles: dataSources.map { $0.tabTitle } )
+		menuBar = BSTabBar(frame: .init(x: 0, y: 0, width: frame.width, height: config.menuBarHeight), titles: dataSources.map { $0.tabTitle } )
         addSubview(menuBar)
         menuBar.delegate = self
         
         menuBar.translatesAutoresizingMaskIntoConstraints = false
         menuBar.topAnchor.constraint(equalTo: self.topAnchor, constant: 0).isActive = true
-        menuBar.heightAnchor.constraint(equalToConstant: barHeight).isActive = true
+		menuBar.heightAnchor.constraint(equalToConstant: config.menuBarHeight).isActive = true
         menuBar.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0).isActive = true
         menuBar.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0).isActive = true
     }
@@ -66,8 +75,8 @@ final class BSTabPageView: UIView {
 }
 
 extension BSTabPageView: BSTabPageContentViewDelegate {
-    func shouldLockGesture(_ lock: Bool) {
-        self.shouldLockGesture = lock
+    func isTabMenuClickable(_ lock: Bool) {
+        self.isTabMenuClickable = lock
     }
     
     func contentDidChange(index: Int) {

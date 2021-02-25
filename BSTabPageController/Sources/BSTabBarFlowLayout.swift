@@ -10,7 +10,6 @@ import UIKit
 class BSTabBarContentFlowLayout: UICollectionViewFlowLayout {
     override func prepare() {
         super.prepare()
-        guard let cv = collectionView else { return }
         scrollDirection = .horizontal
         minimumLineSpacing = 0
         minimumInteritemSpacing = 0
@@ -43,6 +42,6 @@ class BSTabBarFlowLayout: UICollectionViewFlowLayout {
         cv.layoutMargins = .zero
 		cv.contentOffset = .zero
 		cv.contentInset = .zero
-        itemSize = .init(width: cv.frame.width / CGFloat(itemCount), height: cv.frame.height)
+		itemSize = .init(width: cv.frame.width / CGFloat(itemCount), height: cv.frame.height)
     }
 }
