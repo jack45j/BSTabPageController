@@ -9,24 +9,34 @@ import UIKit
 
 class BSTabPageContentView: UIViewController {
     
+    /// Collection of content views
     let contentViews: [BSTabPageViewType]
+    
+    /// Selected item
 	var selected: IndexPath = .init()
     
     weak var delegate: BSTabPageContentViewDelegate?
 	
     lazy var contentCollectionView: UICollectionView = {
-		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: BSMenuBarContentFlowLayout())
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 0
+        layout.minimumInteritemSpacing = 0
+        layout.sectionInset = .zero
+		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.isPagingEnabled = true
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .clear
+        collectionView.showsHorizontalScrollIndicator = false
         return collectionView
     }()
 	
     init(contentViews: [BSTabPageViewType]) {
 		self.contentViews = contentViews
 		super.init(nibName: nil, bundle: nil)
-		commonInit()
+        contentCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "BSTabPageContentCell")
+        view.addSubview(contentCollectionView)
 	}
     
     required init?(coder: NSCoder) {
@@ -45,10 +55,12 @@ class BSTabPageContentView: UIViewController {
 		contentCollectionView.layoutAttributesForItem(at: selected)
 		delegate?.contentDidChange(index: selected.item)
 	}
-    
-    func commonInit() {
-		contentCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "BSTabPageContentCell")
-		view.addSubview(contentCollectionView)
+}
+
+// MARK: ScrollViewDelegate
+extension BSTabPageContentView {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        delegate?.didScroll(scrollView)
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -56,9 +68,9 @@ class BSTabPageContentView: UIViewController {
     }
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-		let index = Int(targetContentOffset.pointee.x / view.frame.width)
+        let index = Int(targetContentOffset.pointee.x / view.frame.width)
         delegate?.contentDidChange(index: index)
-		selected = IndexPath(item: index, section: 0)
+        selected = IndexPath(item: index, section: 0)
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
@@ -66,6 +78,7 @@ class BSTabPageContentView: UIViewController {
     }
 }
 
+// MARK: UICollectionViewDelegate & UICollectionViewDataSource
 extension BSTabPageContentView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         contentViews.count
@@ -86,4 +99,5 @@ extension BSTabPageContentView: UICollectionViewDelegate, UICollectionViewDataSo
 protocol BSTabPageContentViewDelegate: class {
     func contentDidChange(index: Int)
     func isTabMenuClickable(_ lock: Bool)
+    func didScroll(_ scrollView: UIScrollView)
 }

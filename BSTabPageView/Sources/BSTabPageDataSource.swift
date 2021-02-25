@@ -18,12 +18,6 @@ struct BSTabPageDataSource {
     
     // Tab content page. Can be UIView and UIViewController.
     var page: BSTabPageViewType
-
-    
-//    init(title: String, page: BSTabPageViewType) {
-//        self.tabTitle = title
-//        self.page = page
-//    }
     
 }
 
@@ -32,13 +26,9 @@ protocol BSTabPageViewType {
 }
 
 extension UIViewController: BSTabPageViewType {
-    var pageView: UIView {
-        return self.view
-    }
+    var pageView: UIView { return self.view }
 }
 
 extension UIView: BSTabPageViewType {
-    var pageView: UIView {
-        return self
-    }
+    var pageView: UIView { return self }
 }

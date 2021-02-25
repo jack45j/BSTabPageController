@@ -9,32 +9,16 @@ import UIKit
 
 class BSMenuBar: UIView, UICollectionViewDelegateFlowLayout {
     
+    // Tab bar items
     var items: [BSTabPageDataSource]
     
-    weak var delegate: BSMenuBarDelegate?
+    // Configurations of BSTabPageView
     var config: BSTabPageViewConfiguration!
+    
+    weak var delegate: BSMenuBarDelegate?
         
     let horizontalBarView = UIView()
-	lazy var horizontalBarCenterXAnchorConstraint: NSLayoutConstraint = .init()
-    
-    func setupHorizontalBar() {
-        // Bar background view
-        let backgroundView = UIView()
-        addSubview(backgroundView)
-        backgroundView.backgroundColor = config.menuBarLineBackgroundColor
-        backgroundView.translatesAutoresizingMaskIntoConstraints = false
-        backgroundView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        backgroundView.widthAnchor.constraint(equalTo: menuItemCollectionView.widthAnchor, multiplier: 1).isActive = true
-        backgroundView.heightAnchor.constraint(equalToConstant: config.menuBarLineHeight).isActive = true
-        
-        // Bar view
-        horizontalBarView.backgroundColor = config.menuBarLineColor
-        horizontalBarView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(horizontalBarView)
-        horizontalBarView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        horizontalBarView.widthAnchor.constraint(equalTo: menuItemCollectionView.widthAnchor, multiplier: CGFloat(1.0 / Double(items.count))).isActive = true
-        horizontalBarView.heightAnchor.constraint(equalToConstant: config.menuBarLineHeight).isActive = true
-    }
+	lazy var horizontalBarCenterLeftAnchorConstraint: NSLayoutConstraint = .init()
     
     init(config: BSTabPageViewConfiguration, items: [BSTabPageDataSource]) {
         self.items = items
@@ -62,28 +46,43 @@ class BSMenuBar: UIView, UICollectionViewDelegateFlowLayout {
         collectionView.backgroundColor = config.menuBarBackgroundColor
         return collectionView
     }()
-    
+
     func selectTab(index: Int) {
         delegate?.didSelectTab(index: index)
         menuItemCollectionView.visibleCells.forEach { $0.isHighlighted = menuItemCollectionView.indexPath(for: $0) == IndexPath(item: index, section: 0) }
         menuItemCollectionView.selectItem(at: .init(item: index, section: 0), animated: true, scrollPosition: .centeredHorizontally)
-		horizontalBarCenterXAnchorConstraint.isActive = false
-		guard let cell = menuItemCollectionView.cellForItem(at: .init(item: index, section: 0)) else { return }
-		horizontalBarCenterXAnchorConstraint = horizontalBarView.centerXAnchor.constraint(equalTo: cell.centerXAnchor)
-		horizontalBarCenterXAnchorConstraint.isActive = true
-		
-		UIView.animate(withDuration: 0.5) {
-			self.layoutSubviews()
-        }
+    }
+    
+    func setupHorizontalBar() {
+        // Bar background view
+        let backgroundView = UIView()
+        addSubview(backgroundView)
+        backgroundView.backgroundColor = config.menuBarLineBackgroundColor
+        backgroundView.translatesAutoresizingMaskIntoConstraints = false
+        backgroundView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        backgroundView.widthAnchor.constraint(equalTo: menuItemCollectionView.widthAnchor, multiplier: 1).isActive = true
+        backgroundView.heightAnchor.constraint(equalToConstant: config.menuBarLineHeight).isActive = true
+        
+        // Bar view
+        horizontalBarView.backgroundColor = config.menuBarLineColor
+        horizontalBarView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(horizontalBarView)
+        horizontalBarCenterLeftAnchorConstraint = horizontalBarView.leftAnchor.constraint(equalTo: self.leftAnchor)
+        horizontalBarCenterLeftAnchorConstraint.isActive = true
+        horizontalBarView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        horizontalBarView.widthAnchor.constraint(equalTo: menuItemCollectionView.widthAnchor, multiplier: CGFloat(1.0 / Double(items.count))).isActive = true
+        horizontalBarView.heightAnchor.constraint(equalToConstant: config.menuBarLineHeight).isActive = true
     }
 }
 
+// MARK: UICollectionViewDelegate
 extension BSMenuBar: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectTab(index: indexPath.item)
     }
 }
 
+// MARK: UICollectionViewDataSource
 extension BSMenuBar: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         items.count

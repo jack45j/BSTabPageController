@@ -35,6 +35,10 @@ class BSTabCell: UICollectionViewCell {
         stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8).isActive = true
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     private func setupStackView(_ views: [UIView]) -> UIStackView {
         let stackView = UIStackView(arrangedSubviews: views)
         stackView.alignment = .center
@@ -42,9 +46,5 @@ class BSTabCell: UICollectionViewCell {
         stackView.spacing = 0
         stackView.distribution = .fillProportionally
         return stackView
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

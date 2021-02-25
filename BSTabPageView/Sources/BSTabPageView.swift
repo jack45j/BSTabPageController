@@ -1,6 +1,6 @@
 //
-//  BSTabPageController.swift
-//  BSTabPageController
+//  BSTabPageView.swift
+//  BSTabPageView
 //
 //  Created by 林翌埕-20001107 on 2021/2/24.
 //
@@ -9,15 +9,17 @@ import UIKit
 
 final class BSTabPageView: UIView {
 	
+    /// BSTabPageView's configuration.
     var config: BSTabPageViewConfiguration = .init()
     
+    /// A Boolean value to determine weather menu tab bar clickable or not.
     var isTabMenuClickable: Bool = false {
         didSet {
             menuBar.menuItemCollectionView.allowsSelection = !isTabMenuClickable
         }
     }
     
-    // BSTabPageView's dataSources. Page can be UIView or UIViewController.
+    /// BSTabPageView's dataSources. Page can be UIView or UIViewController.
     var dataSources: [BSTabPageDataSource] = []
     var menuBar: BSMenuBar!
     var contentView: BSTabPageContentView!
@@ -36,10 +38,11 @@ final class BSTabPageView: UIView {
         super.draw(rect)
         guard menuBar == nil && contentView == nil else { return }
         setupMenuBar()
-        setupcontentViews()
+        setupContentViews()
     }
     
-    private func setupcontentViews() {
+    
+    private func setupContentViews() {
         contentView = BSTabPageContentView(contentViews: dataSources.map { $0.page })
 		addSubview(contentView.view)
         
@@ -77,6 +80,10 @@ extension BSTabPageView: BSTabPageContentViewDelegate {
     
     func contentDidChange(index: Int) {
         menuBar.selectTab(index: index)
+    }
+    
+    func didScroll(_ scrollView: UIScrollView) {
+        menuBar.horizontalBarCenterLeftAnchorConstraint.constant = scrollView.contentOffset.x / CGFloat(dataSources.count)
     }
 }
 

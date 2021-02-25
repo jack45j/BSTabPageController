@@ -7,16 +7,6 @@
 
 import UIKit
 
-class BSMenuBarContentFlowLayout: UICollectionViewFlowLayout {
-    override func prepare() {
-        super.prepare()
-        scrollDirection = .horizontal
-        minimumLineSpacing = 0
-        minimumInteritemSpacing = 0
-		sectionInset = .zero
-    }
-}
-
 class BSMenuBarFlowLayout: UICollectionViewFlowLayout {
     
     private let itemCount: Int
