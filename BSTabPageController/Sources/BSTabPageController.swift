@@ -7,33 +7,23 @@
 
 import UIKit
 
-struct BSTabPageViewConfiguration {
-	var menuBarHeight: CGFloat = 60
-	var menuBarFont: UIFont = .systemFont(ofSize: 24)
-	var menuBarTextColor: UIColor = .black
-	var menuBarHighlightedTextColor: UIColor = .black
-	var menuBarLineHeight: CGFloat = 4
-	var menuBarLineColor: UIColor = .black
-	var menuBarBackgroundColor: CGColor = UIColor.red.cgColor
-	var menuBarHighlightedBackgroundColor: CGColor = UIColor.white.cgColor
-}
-
 final class BSTabPageView: UIView {
 	
-	var config: BSTabPageViewConfiguration = .init()
+    var config: BSTabPageViewConfiguration = .init()
     
     var isTabMenuClickable: Bool = false {
         didSet {
-            menuBar.tabCollectionView.allowsSelection = !isTabMenuClickable
+            menuBar.menuItemCollectionView.allowsSelection = !isTabMenuClickable
         }
     }
     
     // BSTabPageView's dataSources. Page can be UIView or UIViewController.
     var dataSources: [BSTabPageDataSource] = []
-    var menuBar: BSTabBar!
-    var contentPage: BSTabPageContentView!
+    var menuBar: BSMenuBar!
+    var contentView: BSTabPageContentView!
     
-    init(frame: CGRect, dataSources: [BSTabPageDataSource]) {
+    init(frame: CGRect, config: BSTabPageViewConfiguration = .init(), dataSources: [BSTabPageDataSource]) {
+        self.config = config
         self.dataSources = dataSources
         super.init(frame: frame)
     }
@@ -44,36 +34,42 @@ final class BSTabPageView: UIView {
     
     override func draw(_ rect: CGRect) {
         super.draw(rect)
-        setupTabBar()
-        setupContentPages()
+        guard menuBar == nil && contentView == nil else { return }
+        setupMenuBar()
+        setupcontentViews()
     }
     
-    private func setupTabBar() {
-		menuBar = BSTabBar(frame: .init(x: 0, y: 0, width: frame.width, height: config.menuBarHeight), titles: dataSources.map { $0.tabTitle } )
+    private func setupcontentViews() {
+        contentView = BSTabPageContentView(contentViews: dataSources.map { $0.page })
+		addSubview(contentView.view)
+        
+        contentView.selected = IndexPath(item: config.defaultSelectPage, section: 0)
+        contentView.delegate = self
+        
+        // Constraints
+        contentView.view.translatesAutoresizingMaskIntoConstraints = false
+        contentView.view.topAnchor.constraint(equalTo: menuBar.bottomAnchor, constant: 0).isActive = true
+        contentView.view.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0).isActive = true
+        contentView.view.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0).isActive = true
+        contentView.view.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0).isActive = true
+    }
+    
+    private func setupMenuBar() {
+        menuBar = BSMenuBar(config: config, items: dataSources)
         addSubview(menuBar)
+        
         menuBar.delegate = self
         
+        // Constraints
         menuBar.translatesAutoresizingMaskIntoConstraints = false
         menuBar.topAnchor.constraint(equalTo: self.topAnchor, constant: 0).isActive = true
-		menuBar.heightAnchor.constraint(equalToConstant: config.menuBarHeight).isActive = true
+        menuBar.heightAnchor.constraint(equalToConstant: config.menuBarHeight).isActive = true
         menuBar.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0).isActive = true
         menuBar.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0).isActive = true
     }
-    
-    private func setupContentPages() {
-        contentPage = BSTabPageContentView(contentPages: dataSources.map { $0.page })
-		addSubview(contentPage.view)
-		contentPage.selected = IndexPath(item: 0, section: 0)
-        contentPage.delegate = self
-        
-        contentPage.view.translatesAutoresizingMaskIntoConstraints = false
-        contentPage.view.topAnchor.constraint(equalTo: menuBar.bottomAnchor, constant: 0).isActive = true
-        contentPage.view.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0).isActive = true
-        contentPage.view.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0).isActive = true
-        contentPage.view.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0).isActive = true
-    }
 }
 
+// MARK: BSTabPageContentViewDelegate
 extension BSTabPageView: BSTabPageContentViewDelegate {
     func isTabMenuClickable(_ lock: Bool) {
         self.isTabMenuClickable = lock
@@ -84,10 +80,11 @@ extension BSTabPageView: BSTabPageContentViewDelegate {
     }
 }
 
-extension BSTabPageView: BSTabBarDelegate {
+// MARK: BSTabPageView
+extension BSTabPageView: BSMenuBarDelegate {
     func didSelectTab(index: Int) {
-		contentPage.selected = .init(item: index, section: 0)
-        contentPage.contentCollectionView.selectItem(at: .init(item: index, section: 0), animated: true, scrollPosition: .centeredHorizontally)
+		contentView.selected = .init(item: index, section: 0)
+        contentView.contentCollectionView.selectItem(at: .init(item: index, section: 0), animated: true, scrollPosition: .centeredHorizontally)
     }
 }
 

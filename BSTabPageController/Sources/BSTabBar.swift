@@ -1,5 +1,5 @@
 //
-//  BSTabBar.swift
+//  BSMenuBar.swift
 //  BSTabPageController
 //
 //  Created by 林翌埕-20001107 on 2021/2/24.
@@ -7,27 +7,39 @@
 
 import UIKit
 
-class BSTabBar: UIView, UICollectionViewDelegateFlowLayout {
+class BSMenuBar: UIView, UICollectionViewDelegateFlowLayout {
     
-    var tabs: [String]
+    var items: [BSTabPageDataSource]
     
-    weak var delegate: BSTabBarDelegate?
+    weak var delegate: BSMenuBarDelegate?
+    var config: BSTabPageViewConfiguration!
         
     let horizontalBarView = UIView()
 	lazy var horizontalBarCenterXAnchorConstraint: NSLayoutConstraint = .init()
     
     func setupHorizontalBar() {
-        horizontalBarView.backgroundColor = .green
+        // Bar background view
+        let backgroundView = UIView()
+        addSubview(backgroundView)
+        backgroundView.backgroundColor = config.menuBarLineBackgroundColor
+        backgroundView.translatesAutoresizingMaskIntoConstraints = false
+        backgroundView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        backgroundView.widthAnchor.constraint(equalTo: menuItemCollectionView.widthAnchor, multiplier: 1).isActive = true
+        backgroundView.heightAnchor.constraint(equalToConstant: config.menuBarLineHeight).isActive = true
+        
+        // Bar view
+        horizontalBarView.backgroundColor = config.menuBarLineColor
         horizontalBarView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(horizontalBarView)
         horizontalBarView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        horizontalBarView.widthAnchor.constraint(equalTo: tabCollectionView.widthAnchor, multiplier: CGFloat(1.0 / Double(tabs.count))).isActive = true
-        horizontalBarView.heightAnchor.constraint(equalToConstant: 4).isActive = true
+        horizontalBarView.widthAnchor.constraint(equalTo: menuItemCollectionView.widthAnchor, multiplier: CGFloat(1.0 / Double(items.count))).isActive = true
+        horizontalBarView.heightAnchor.constraint(equalToConstant: config.menuBarLineHeight).isActive = true
     }
     
-    init(frame: CGRect, titles: [String]) {
-        self.tabs = titles
-        super.init(frame: frame)
+    init(config: BSTabPageViewConfiguration, items: [BSTabPageDataSource]) {
+        self.items = items
+        self.config = config
+        super.init(frame: .zero)
         commonInit()
     }
     
@@ -36,26 +48,27 @@ class BSTabBar: UIView, UICollectionViewDelegateFlowLayout {
     }
     
     func commonInit() {
-        tabCollectionView.register(BSTabCell.self, forCellWithReuseIdentifier: String(describing: BSTabCell.self))
+        menuItemCollectionView.register(BSTabCell.self, forCellWithReuseIdentifier: String(describing: BSTabCell.self))
         
-        addSubview(tabCollectionView)
-        setFillConstraint(parent: self, child: tabCollectionView)
+        addSubview(menuItemCollectionView)
+        setFillConstraint(parent: self, child: menuItemCollectionView)
         setupHorizontalBar()
     }
     
-    lazy var tabCollectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: frame, collectionViewLayout: BSTabBarFlowLayout(itemCount: tabs.count))
+    lazy var menuItemCollectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: frame, collectionViewLayout: BSMenuBarFlowLayout(itemCount: items.count))
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.backgroundColor = .black
+        collectionView.backgroundColor = config.menuBarBackgroundColor
         return collectionView
     }()
     
     func selectTab(index: Int) {
         delegate?.didSelectTab(index: index)
-        tabCollectionView.selectItem(at: .init(item: index, section: 0), animated: true, scrollPosition: .centeredHorizontally)
+        menuItemCollectionView.visibleCells.forEach { $0.isHighlighted = menuItemCollectionView.indexPath(for: $0) == IndexPath(item: index, section: 0) }
+        menuItemCollectionView.selectItem(at: .init(item: index, section: 0), animated: true, scrollPosition: .centeredHorizontally)
 		horizontalBarCenterXAnchorConstraint.isActive = false
-		guard let cell = tabCollectionView.cellForItem(at: .init(item: index, section: 0)) else { return }
+		guard let cell = menuItemCollectionView.cellForItem(at: .init(item: index, section: 0)) else { return }
 		horizontalBarCenterXAnchorConstraint = horizontalBarView.centerXAnchor.constraint(equalTo: cell.centerXAnchor)
 		horizontalBarCenterXAnchorConstraint.isActive = true
 		
@@ -65,24 +78,31 @@ class BSTabBar: UIView, UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension BSTabBar: UICollectionViewDelegate {
+extension BSMenuBar: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectTab(index: indexPath.item)
     }
 }
 
-extension BSTabBar: UICollectionViewDataSource {
+extension BSMenuBar: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        tabs.count
+        items.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: BSTabCell.self), for: indexPath) as? BSTabCell else { fatalError() }
-		cell.titleLabel.text = tabs[indexPath.row]
+        cell.titleLabel.text = items[indexPath.item].tabTitle
+        cell.titleLabel.font = config.menuBarFont
+        cell.titleLabel.highlightedTextColor = config.menuBarHighlightedTextColor
+        cell.titleLabel.textColor = config.menuBarTextColor
+        cell.iconImageView.image = items[indexPath.item].tabIcon?.image ?? .none
+        cell.iconImageView.highlightedImage = items[indexPath.item].tabIcon?.highlightedImage ?? .none
+        cell.stackView.axis = config.menuBarArrangedDirection
+        cell.backgroundColor = cell.isHighlighted ? config.menuBarHighlightedBackgroundColor : config.menuBarBackgroundColor
         return cell
     }
 }
 
-protocol BSTabBarDelegate: class {
+protocol BSMenuBarDelegate: class {
     func didSelectTab(index: Int)
 }

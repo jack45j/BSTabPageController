@@ -9,22 +9,22 @@ import UIKit
 
 class BSTabPageContentView: UIViewController {
     
-    let contentPages: [BSTabPageViewType]
+    let contentViews: [BSTabPageViewType]
 	var selected: IndexPath = .init()
     
     weak var delegate: BSTabPageContentViewDelegate?
 	
     lazy var contentCollectionView: UICollectionView = {
-		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: BSTabBarContentFlowLayout())
+		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: BSMenuBarContentFlowLayout())
         collectionView.isPagingEnabled = true
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.backgroundColor = .black
+        collectionView.backgroundColor = .clear
         return collectionView
     }()
 	
-	init(contentPages: [BSTabPageViewType]) {
-		self.contentPages = contentPages
+    init(contentViews: [BSTabPageViewType]) {
+		self.contentViews = contentViews
 		super.init(nibName: nil, bundle: nil)
 		commonInit()
 	}
@@ -68,13 +68,13 @@ class BSTabPageContentView: UIViewController {
 
 extension BSTabPageContentView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        contentPages.count
+        contentViews.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BSTabPageContentCell", for: indexPath)
-		cell.contentView.addSubview(contentPages[indexPath.item].pageView)
-		setFillConstraint(parent: cell.contentView, child: contentPages[indexPath.item].pageView)
+		cell.contentView.addSubview(contentViews[indexPath.item].pageView)
+		setFillConstraint(parent: cell.contentView, child: contentViews[indexPath.item].pageView)
         return cell
     }
 	

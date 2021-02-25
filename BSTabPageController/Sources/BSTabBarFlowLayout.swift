@@ -1,5 +1,5 @@
 //
-//  BSTabBarFlowLayout.swift
+//  BSMenuBarFlowLayout.swift
 //  BSTabPageController
 //
 //  Created by 林翌埕-20001107 on 2021/2/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BSTabBarContentFlowLayout: UICollectionViewFlowLayout {
+class BSMenuBarContentFlowLayout: UICollectionViewFlowLayout {
     override func prepare() {
         super.prepare()
         scrollDirection = .horizontal
@@ -17,7 +17,7 @@ class BSTabBarContentFlowLayout: UICollectionViewFlowLayout {
     }
 }
 
-class BSTabBarFlowLayout: UICollectionViewFlowLayout {
+class BSMenuBarFlowLayout: UICollectionViewFlowLayout {
     
     private let itemCount: Int
     
@@ -33,7 +33,8 @@ class BSTabBarFlowLayout: UICollectionViewFlowLayout {
     override func prepare() {
         super.prepare()
         
-        guard let cv = collectionView else { return }
+        guard let cv = collectionView,
+              cv.frame != .zero else { return }
         
         let lineSpacing = 0
         let interSpacing = 0

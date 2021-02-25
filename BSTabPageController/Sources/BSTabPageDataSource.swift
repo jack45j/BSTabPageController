@@ -9,18 +9,21 @@ import UIKit
 
 // DataSource of BSTabPageView
 struct BSTabPageDataSource {
-    // TODO: tabIcon
+    
+    // Tab item Icon
+    var tabIcon: UIImageView? = nil
     
     // Tab title String.
     var tabTitle: String
     
     // Tab content page. Can be UIView and UIViewController.
     var page: BSTabPageViewType
+
     
-    init(title: String, page: BSTabPageViewType) {
-        self.tabTitle = title
-        self.page = page
-    }
+//    init(title: String, page: BSTabPageViewType) {
+//        self.tabTitle = title
+//        self.page = page
+//    }
     
 }
 

@@ -15,14 +15,26 @@ class ViewController: UIViewController {
         let view1 = UIView()
         view1.backgroundColor = .blue
         
-        let controller = UIViewController()
-        controller.view.backgroundColor = .yellow
-		tabPage.config.menuBarHeight = 60
+        let view2 = UIView()
+        view2.backgroundColor = .lightGray
+        
+        let controller1 = UIViewController()
+        controller1.view.backgroundColor = .yellow
+        
+        let controller2 = UIViewController()
+        controller2.view.backgroundColor = .purple
+        let tabBarConfig = BSTabPageViewConfiguration(menuBarHeight: 60,
+                                                      menuBarLineHeight: 2,
+                                                      menuBarLineBackgroundColor: .lightGray,
+                                                      menuBarLineColor: .green,
+                                                      menuBarBackgroundColor: .white,
+                                                      menuBarHighlightedBackgroundColor: .white)
+		tabPage.config = tabBarConfig
         tabPage.dataSources = [
-            BSTabPageDataSource(title: "ABC", page: view1),
-            BSTabPageDataSource(title: "CBA", page: controller),
-			BSTabPageDataSource(title: "DDD", page: view1),
-			BSTabPageDataSource(title: "CBAA", page: controller)
+            BSTabPageDataSource(tabTitle: "ABC", page: view1),
+            BSTabPageDataSource(tabTitle: "CBA", page: controller1),
+			BSTabPageDataSource(tabTitle: "DDD", page: view2),
+			BSTabPageDataSource(tabTitle: "CBAA", page: controller2)
         ]
     }
 }

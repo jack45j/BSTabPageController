@@ -11,6 +11,7 @@
 		DB2053B825E5FF55001915B4 /* BSTabCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2053B725E5FF55001915B4 /* BSTabCell.swift */; };
 		DB2053BB25E605C6001915B4 /* BSTabBarFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2053BA25E605C6001915B4 /* BSTabBarFlowLayout.swift */; };
 		DB2053BE25E63F5D001915B4 /* BSTabPageContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2053BD25E63F5D001915B4 /* BSTabPageContentView.swift */; };
+		DB2053C625E75C15001915B4 /* BSTabPageViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2053C525E75C15001915B4 /* BSTabPageViewConfiguration.swift */; };
 		DBD6AC1725E5EAD50099C733 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD6AC1625E5EAD50099C733 /* AppDelegate.swift */; };
 		DBD6AC1925E5EAD50099C733 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD6AC1825E5EAD50099C733 /* SceneDelegate.swift */; };
 		DBD6AC1B25E5EAD50099C733 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD6AC1A25E5EAD50099C733 /* ViewController.swift */; };
@@ -26,6 +27,7 @@
 		DB2053B725E5FF55001915B4 /* BSTabCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSTabCell.swift; sourceTree = "<group>"; };
 		DB2053BA25E605C6001915B4 /* BSTabBarFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSTabBarFlowLayout.swift; sourceTree = "<group>"; };
 		DB2053BD25E63F5D001915B4 /* BSTabPageContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSTabPageContentView.swift; sourceTree = "<group>"; };
+		DB2053C525E75C15001915B4 /* BSTabPageViewConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSTabPageViewConfiguration.swift; sourceTree = "<group>"; };
 		DBD6AC1325E5EAD50099C733 /* BSTabPageController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BSTabPageController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBD6AC1625E5EAD50099C733 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DBD6AC1825E5EAD50099C733 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -89,6 +91,7 @@
 				DB2053B425E5FF31001915B4 /* BSTabBar.swift */,
 				DB2053B725E5FF55001915B4 /* BSTabCell.swift */,
 				DB2053BA25E605C6001915B4 /* BSTabBarFlowLayout.swift */,
+				DB2053C525E75C15001915B4 /* BSTabPageViewConfiguration.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -165,6 +168,7 @@
 			files = (
 				DBD6AC1B25E5EAD50099C733 /* ViewController.swift in Sources */,
 				DBD6AC2C25E5EB1D0099C733 /* BSTabPageController.swift in Sources */,
+				DB2053C625E75C15001915B4 /* BSTabPageViewConfiguration.swift in Sources */,
 				DB2053BE25E63F5D001915B4 /* BSTabPageContentView.swift in Sources */,
 				DB2053BB25E605C6001915B4 /* BSTabBarFlowLayout.swift in Sources */,
 				DB2053B525E5FF31001915B4 /* BSTabBar.swift in Sources */,

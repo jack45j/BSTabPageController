@@ -9,25 +9,39 @@ import UIKit
 
 class BSTabCell: UICollectionViewCell {
     
+    lazy var stackView = setupStackView([iconImageView, titleLabel])
+    
     let titleLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.backgroundColor = .red
-        label.tintColor = .blue
-        label.textColor = .yellow
+        label.backgroundColor = .clear
+        label.textColor = .black
         return label
     }()
     
-    override var isHighlighted: Bool {
-        didSet {
-            // TODO: Change Color
-        }
-    }
+    var iconImageView: UIImageView = {
+        let imgView = UIImageView()
+        imgView.contentMode = .scaleAspectFit
+        return imgView
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(titleLabel)
-        setFillConstraint(parent: contentView, child: titleLabel)
+        addSubview(stackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8).isActive = true
+        stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8).isActive = true
+        stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8).isActive = true
+    }
+    
+    private func setupStackView(_ views: [UIView]) -> UIStackView {
+        let stackView = UIStackView(arrangedSubviews: views)
+        stackView.alignment = .center
+        stackView.axis = .horizontal
+        stackView.spacing = 0
+        stackView.distribution = .fillProportionally
+        return stackView
     }
     
     required init?(coder: NSCoder) {
